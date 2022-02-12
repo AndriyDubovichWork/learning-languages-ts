@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import theme from '../theme';
@@ -16,52 +16,71 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { ColorButton } from './Main';
 import Typography from '@mui/material/Typography';
+import {
+  GetWordsFromDb,
+  DeleteSelected,
+  TranslateSelected,
+  IsChecked,
+} from './../Redux/AppReducer';
+import WordItem from './WordItem';
 
 const Sidebar = (props: any) => {
-  const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+  const [DisableTranslateAndDelete, setDisableTranslateAndDelete] =
+    useState(true);
+
+  useEffect(() => {
+    props.GetWordsFromDb();
+    setDisableTranslateAndDelete(props.IsChecked(props.words));
+  }, []);
+  useEffect(() => {
+    props.IsChecked(props.words).then((res: any) => {
+      setDisableTranslateAndDelete(res);
+    });
+  }, [props.words]);
+
   const drawer = (
     <div>
       <List>
-        <ListItem>
+        <ListItem key='1'>
           <ColorButton
-            disabled={false}
+            disabled={!DisableTranslateAndDelete}
             color='primary'
             variant='contained'
-            // onClick={}
+            onClick={() => {
+              props.TranslateSelected(props.words);
+            }}
             sx={{ m: 2 }}
           >
             Translate
           </ColorButton>
           <ColorButton
-            disabled={false}
+            disabled={!DisableTranslateAndDelete}
             color='primary'
             variant='contained'
-            // onClick={getWord}
+            onClick={() => {
+              props.DeleteSelected(props.words);
+            }}
             sx={{ m: 2 }}
           >
             Delete
           </ColorButton>
           <Divider />
         </ListItem>
-        {arr.map((obj) => {
-          return (
-            <ListItem key={'lbs' + obj}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    style={{
-                      color: theme.palette.primary.main,
-                    }}
-                  />
-                }
-                label={
-                  <Typography sx={{ color: theme.palette.text.primary }}>
-                    {'lbs' + obj}
-                  </Typography>
-                }
+        {props.words.map((obj: any) => {
+          try {
+            return (
+              <WordItem
+                key={obj.id + obj.word}
+                word={obj.word}
+                defenition={obj.defenition}
+                translated={obj.translatedWord}
+                translatedDefenition={obj.translatedDefenition}
+                id={obj.id}
+                isChecked={obj.isChecked}
+                isTranslated={obj.isTranslated}
               />
-            </ListItem>
-          );
+            );
+          } catch (error) {}
         })}
       </List>
     </div>
@@ -95,7 +114,14 @@ const Sidebar = (props: any) => {
     </Box>
   );
 };
-const MapStateToProps = () => {
-  return {};
+const MapStateToProps = (store: any) => {
+  return {
+    words: store.app.WordsArr,
+  };
 };
-export default connect(MapStateToProps, {})(Sidebar);
+export default connect(MapStateToProps, {
+  GetWordsFromDb,
+  DeleteSelected,
+  TranslateSelected,
+  IsChecked,
+})(Sidebar);

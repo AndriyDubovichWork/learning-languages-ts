@@ -1,12 +1,10 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { GetWord, SetWordKnownFalse } from '../Redux/AppReducer';
+import { GetWord, SetWordKnownFalse, addWordToDb } from '../Redux/AppReducer';
 import { styled } from '@mui/material/styles';
 import { Card, Typography, CardContent } from '@mui/material';
 import { Box } from '@mui/system';
-import SettingsIcon from '@mui/icons-material/Settings';
-import theme from '../theme';
 
 export const ColorButton = styled(LoadingButton)(({ theme }) => ({
   color: '#fff',
@@ -32,6 +30,7 @@ interface IMain {
   translatedExplain: string;
   originalExplain: string;
   GetWord: Function;
+  addWordToDb: Function;
   SetWordKnownFalse: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -43,7 +42,9 @@ const Main = (props: IMain) => {
     if (props.word && disableNext) {
       setDisableNext(false);
     }
-    setDisableTranslate(false);
+    if (props.word) {
+      setDisableTranslate(false);
+    }
     if (props.word && !props.WordKnown) {
       setDisableTranslate(true);
     }
@@ -53,6 +54,15 @@ const Main = (props: IMain) => {
     setDisableNext(true);
     setDisableTranslate(true);
     props.GetWord();
+  };
+  const DontKnowWord = (e: any) => {
+    props.SetWordKnownFalse(e);
+    props.addWordToDb(
+      props.word,
+      props.originalExplain,
+      props.translate,
+      props.translatedExplain
+    );
   };
   return (
     <Box
@@ -75,7 +85,7 @@ const Main = (props: IMain) => {
           <ColorButton
             disabled={disableTranslate}
             variant='contained'
-            onClick={props.SetWordKnownFalse}
+            onClick={DontKnowWord}
             sx={{ m: 2 }}
           >
             translate
@@ -138,4 +148,8 @@ const MapStateToProps = (state: IMapStateToProps) => {
     WordKnown: state.app.WordKnown,
   };
 };
-export default connect(MapStateToProps, { GetWord, SetWordKnownFalse })(Main);
+export default connect(MapStateToProps, {
+  GetWord,
+  SetWordKnownFalse,
+  addWordToDb,
+})(Main);
