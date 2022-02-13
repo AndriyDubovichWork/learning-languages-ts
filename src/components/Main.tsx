@@ -5,6 +5,7 @@ import { GetWord, SetWordKnownFalse, addWordToDb } from '../Redux/AppReducer';
 import { styled } from '@mui/material/styles';
 import { Card, Typography, CardContent } from '@mui/material';
 import { Box } from '@mui/system';
+import PreLoader from './../imgs/loading.gif';
 
 export const ColorButton = styled(LoadingButton)(({ theme }) => ({
   color: '#fff',
@@ -37,8 +38,12 @@ interface IMain {
 const Main = (props: IMain) => {
   const [disableNext, setDisableNext] = useState(false);
   const [disableTranslate, setDisableTranslate] = useState(true);
+  const [IsLoadingWords, setIsLoadingWords] = useState(false);
   const { translate, translatedExplain, originalExplain } = props;
   React.useEffect(() => {
+    if (props.word) {
+      setIsLoadingWords(false);
+    }
     if (props.word && disableNext) {
       setDisableNext(false);
     }
@@ -51,11 +56,13 @@ const Main = (props: IMain) => {
   }, [props.word, props.WordKnown]);
 
   const getWord = () => {
+    setIsLoadingWords(true);
     setDisableNext(true);
     setDisableTranslate(true);
     props.GetWord();
   };
   const DontKnowWord = (e: any) => {
+    setIsLoadingWords(true);
     props.SetWordKnownFalse(e);
     props.addWordToDb(
       props.word,
@@ -92,6 +99,8 @@ const Main = (props: IMain) => {
           </ColorButton>
         </Box>
         <Box>
+          {IsLoadingWords ? <img src={PreLoader} /> : ''}
+
           <Typography>
             {props.WordKnown ? (
               <>
@@ -134,6 +143,7 @@ interface IMapStateToProps {
     translatedExplain: string;
 
     WordKnown: boolean;
+    IsLoadingWords: boolean;
   };
 }
 

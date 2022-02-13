@@ -30,6 +30,7 @@ function AppReducer(state = initialState, action: any) {
         ...state,
         word: action.word,
       };
+
     case SET_ORIGINAL_EXPLAIN:
       return {
         ...state,
@@ -62,6 +63,7 @@ function AppReducer(state = initialState, action: any) {
 }
 
 const SetWord = (word: string) => ({ type: SET_WORD, word });
+
 const SetWordsArr = (WordsArr: any) => ({ type: SET_WORDS_ARR, WordsArr });
 const SetOriginalExplain = (originalExplain: string) => ({
   type: SET_ORIGINAL_EXPLAIN,
