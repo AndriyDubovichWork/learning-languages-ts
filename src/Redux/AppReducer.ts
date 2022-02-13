@@ -116,7 +116,7 @@ export const GetWordsFromDb = () => async (dispatch: any) => {
     obj.isTranslated = false;
     return obj;
   });
-  console.log(res);
+  // console.log(res);
   const result = structuredClone(res);
   dispatch(SetWordsArr(result));
 };

@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { CheckBoxHandler } from './../Redux/AppReducer';
 import { connect } from 'react-redux';
+import ShowTextOnHover from './../helpers/ShowTextOnHover';
 
 interface IWordItem {
   word: string;
@@ -22,7 +23,8 @@ interface IWordItem {
 }
 
 function WordItem(props: IWordItem) {
-  const { word, translated, isTranslated } = props;
+  const { word, translated, isTranslated, defenition, translatedDefenition } =
+    props;
   return (
     <ListItem key={word + '123'}>
       <FormControlLabel
@@ -43,8 +45,15 @@ function WordItem(props: IWordItem) {
           <Typography
             sx={{ color: theme.palette.text.primary }}
             key={'txt' + word}
+            component={'div'}
           >
-            {!isTranslated ? word : translated}
+            {!isTranslated ? (
+              <ShowTextOnHover ShownText={defenition}>{word}</ShowTextOnHover>
+            ) : (
+              <ShowTextOnHover ShownText={translatedDefenition}>
+                {translated}
+              </ShowTextOnHover>
+            )}
           </Typography>
         }
       />
