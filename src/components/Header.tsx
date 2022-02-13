@@ -5,7 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-
+import logo from './../imgs/logo.jpg';
 import Slide from '@mui/material/Slide';
 import theme from '../theme';
 import Sidebar from './Sidebar';
@@ -36,6 +36,7 @@ const Header = (props: any) => {
             <Button onClick={handleDrawerToggle} sx={{ color: '#fff' }}>
               <SettingsIcon />
             </Button>
+            <img src={logo} style={{ height: '50px', float: 'right' }} />
             <Sidebar
               mobileOpen={mobileOpen}
               handleDrawerToggle={handleDrawerToggle}
