@@ -1,11 +1,12 @@
 const axios = require('axios').default;
 
-const Translation = (word: string) => {
+const Translation = (word: string, key: string) => {
   return axios.request({
     method: 'GET',
     url: 'https://translated-mymemory---translation-memory.p.rapidapi.com/api/get',
     params: {
       langpair: 'en|ukr',
+      key: key,
       q: word,
       mt: '1',
       onlyprivate: '0',

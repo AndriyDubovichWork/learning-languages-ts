@@ -5,9 +5,12 @@ import {
   GetWordsFromDB,
   SetWordsToDb,
 } from './../DataBase/Controler';
+import generateKey from '../api/generateKey';
+
 const structuredClone = require('realistic-structured-clone');
 
 const SET_WORD = 'app/SET_WORD';
+const SET_KEY = 'app/SET_KEY';
 const SET_ORIGINAL_EXPLAIN = 'app/SET_ORIGINAL_EXPLAIN';
 const SET_TRANSLATE = 'app/SET_TRANSLATE';
 const SET_TRANSLATED_EXPLAIN = 'app/SET_TRANSLATED_EXPLAIN';
@@ -19,6 +22,7 @@ let initialState = {
   originalExplain: '',
   translate: '',
   translatedExplain: '',
+  key: '',
   WordsArr: [],
   WordKnown: true,
 };
@@ -29,6 +33,11 @@ function AppReducer(state = initialState, action: any) {
       return {
         ...state,
         word: action.word,
+      };
+    case SET_KEY:
+      return {
+        ...state,
+        word: action.key,
       };
 
     case SET_ORIGINAL_EXPLAIN:
@@ -63,6 +72,7 @@ function AppReducer(state = initialState, action: any) {
 }
 
 const SetWord = (word: string) => ({ type: SET_WORD, word });
+const SetKey = (key: string) => ({ type: SET_KEY, key });
 
 const SetWordsArr = (WordsArr: any) => ({ type: SET_WORDS_ARR, WordsArr });
 const SetOriginalExplain = (originalExplain: string) => ({
@@ -84,10 +94,17 @@ const SetWordKnown = (WordKnown: boolean) => ({
 export const SetWordKnownFalse = () => (dispatch: any) => {
   dispatch(SetWordKnown(false));
 };
-export const GetWord = () => async (dispatch: any) => {
+
+export const GetKey = () => async (dispatch: any) => {
+  const key = await generateKey();
+  dispatch(SetKey(key));
+};
+
+export const GetWord = (key: string) => async (dispatch: any) => {
   const data = await word();
   const translated = await Translation(
-    data.data[0].word + ' . ' + data.data[0].definition
+    data.data[0].word + ' . ' + data.data[0].definition,
+    key
   );
   if (translated.status === 200) {
     dispatch(SetWordKnown(true));

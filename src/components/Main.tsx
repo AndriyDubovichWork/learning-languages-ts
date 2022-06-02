@@ -1,7 +1,12 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { GetWord, SetWordKnownFalse, addWordToDb } from '../Redux/AppReducer';
+import {
+  GetWord,
+  SetWordKnownFalse,
+  addWordToDb,
+  GetKey,
+} from '../Redux/AppReducer';
 import { styled } from '@mui/material/styles';
 import { Card, Typography, CardContent } from '@mui/material';
 import { Box } from '@mui/system';
@@ -31,6 +36,7 @@ interface IMain {
   translatedExplain: string;
   originalExplain: string;
   GetWord: Function;
+  GetKey: Function;
   addWordToDb: Function;
   SetWordKnownFalse: React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -40,6 +46,11 @@ const Main = (props: IMain) => {
   const [disableTranslate, setDisableTranslate] = useState(true);
   const [IsLoadingWords, setIsLoadingWords] = useState(false);
   const { translate, translatedExplain, originalExplain } = props;
+  let [apiKey, setApiKey] = useState('');
+  React.useEffect(() => {
+    setApiKey(props.GetKey());
+  }, []);
+
   React.useEffect(() => {
     if (props.word) {
       setIsLoadingWords(false);
@@ -55,11 +66,11 @@ const Main = (props: IMain) => {
     }
   }, [props.word, props.WordKnown]);
 
-  const getWord = () => {
+  const getWord = (apiKey: string) => {
     setIsLoadingWords(true);
     setDisableNext(true);
     setDisableTranslate(true);
-    props.GetWord();
+    props.GetWord(apiKey);
   };
   const DontKnowWord = (e: any) => {
     setIsLoadingWords(true);
@@ -84,7 +95,7 @@ const Main = (props: IMain) => {
             disabled={disableNext}
             color='primary'
             variant='contained'
-            onClick={getWord}
+            onClick={() => getWord(apiKey)}
             sx={{ m: 2 }}
           >
             next
@@ -162,4 +173,5 @@ export default connect(MapStateToProps, {
   GetWord,
   SetWordKnownFalse,
   addWordToDb,
+  GetKey,
 })(Main);
