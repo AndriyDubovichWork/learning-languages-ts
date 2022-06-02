@@ -1,4 +1,4 @@
-#Learning languages app / WordHub#
+# Learning languages app / WordHub
 
 ![alt text](./img.png)
 
@@ -10,40 +10,40 @@
 
 I made this website for my self to learn some fancy english words.
 
-#HOW IT WORKS:
+# HOW IT WORKS:
 
-##The API generates random fancy word and explanition of it then it translate it if you dont know word and push button translate
-
-
+## The API generates random fancy word and explanition of it then it translate it if you dont know word and push button translate
 
 
 
-#Main screen
+
+
+# Main screen
 
 ### at thees screen you can see generated wort it explanation and translation
 
-##How actual buttons works:
+## How actual buttons works:
 
-##NEXT:
-###on click website makes request to API get word and explain of it.Then website get word and explanation and translate it.after all it show the original word an explain of it.
-
-
-##Translate:
-###IF you dont know generated word you push translate button it will show you already translated text and save it to local storage for future
-
-#Sidebar
+## NEXT:
+### on click website makes request to API get word and explain of it.Then website get word and explanation and translate it.after all it show the original word an explain of it.
 
 
-###in sidebar you might see all translated word/word you dont knew you can translate them again or delet if you dont need them anymure
+## Translate:
+### IF you dont know generated word you push translate button it will show you already translated text and save it to local storage for future
 
-#How actual buttons works:
+# Sidebar
 
 
-##Translate:
-###translate selected words
+### in sidebar you might see all translated word/word you dont knew you can translate them again or delet if you dont need them anymure
 
-##delete 
-###delete selected words
+# How actual buttons works:
+
+
+## Translate:
+### translate selected words
+
+## Delete:
+### delete selected words
 
 
 
