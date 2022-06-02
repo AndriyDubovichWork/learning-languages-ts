@@ -1,4 +1,4 @@
-#Learning languages app / WordHub
+#Learning languages app / WordHub#
 
 ![alt text](./img.png)
 
