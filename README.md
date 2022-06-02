@@ -48,9 +48,3 @@ I made this website for my self to learn some fancy english words.
 
 
 
-
-
-
-
-
-
